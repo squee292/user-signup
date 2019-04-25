@@ -74,5 +74,8 @@ def user_login():
             email_error = "Please enter a valid email"
         else: 
             email = str(test_email)
+
+
+    return render_template('signup.html', title = 'Signup')
     
 app.run()
