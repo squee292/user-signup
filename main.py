@@ -66,6 +66,13 @@ def user_login():
     
     if not is_same:
         password_error_two = "Passwords do not match"
-        
+    
+    if test_email = '':
+        email = test_email
+    else:     
+        if not email_check(test_email):
+            email_error = "Please enter a valid email"
+        else: 
+            email = str(test_email)
     
 app.run()
