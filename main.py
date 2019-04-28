@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template
-
+import string
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -12,24 +12,15 @@ def is_length(text):
         return True
 
 
+
+
 def is_same(text1, text2):
     if text1 != text2:
         return False
     else:
         return True
 
-def email_check(text):
-    x = 0
-    y = 0
-    for n in text:
-        if n = '@':
-            x += 1
-        if n = '.':
-            y += 1
-        if x >= 2 or y >= 2:
-            return False
-        else:
-            return True
+
 
 
 
@@ -43,39 +34,53 @@ def index():
 @app.route("/", methods=['POST'])
 def user_login():
 
-    test_length = request.form["username"]
-    test_password1 = request.form["password_one"]
-    test_password2 = request.form["password_two"]
-    test_email = request.form["email"]
+    test_username = str(request.form["username"])
+    test_password1 = str(request.form["password_one"])
+    test_password2 = str(request.form["password_two"])
+    test_email = str(request.form["email"])
     username_error = ''
     password_error = ''
     password_error_two = ''
     email_error = ''
     username = ''
     email = ''
+    error_control = 0
 
 
-    if not is_length(test_length):    
+    if not is_length(test_username):    
         username_error = "Please enter a user name between 3-20 char long"
         username = ''
+        error_control += 1
     else:
-        username = str(test_length)
+        username = test_username
+
+    if test_username.isspace():
+        username_error = "Please enter a user name with no space"
+        username = ''
+        error_control += 1
+    else:
+        username = test_username
     
     if not is_length(test_password1):
-        password_error = "Please enter a password between"
+        password_error = "Please enter a password between 3-20 char long"
+        error_control += 1
     
-    if not is_same:
+    if not is_same(test_password1, test_password2):
         password_error_two = "Passwords do not match"
+        error_control += 1
     
-    if test_email = '':
-        email = test_email
-    else:     
-        if not email_check(test_email):
-            email_error = "Please enter a valid email"
-        else: 
-            email = str(test_email)
+    #if test_email = '':
+        #email = test_email
+    #else:     
+        #if not email_check(test_email):
+            #email_error = "Please enter a valid email"
+        #else: 
+            #email = str(test_email)
 
 
-    return render_template('signup.html', title = 'Signup')
-    
+    if error_control > 0:
+        return render_template('signup.html', title = 'Signup', username_error = username_error,
+        password_error = password_error, password_error_two = password_error_two)
+    else:
+        return render_template('welcome.html', title = 'Welcome')
 app.run()
