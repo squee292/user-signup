@@ -43,7 +43,7 @@ def email_check(email):
             counter1 += 1
         if n == '@':
             counter2 += 1
-    if counter1 > 1 or counter2 > 1:
+    if counter1 > 1 or counter2 > 1 or counter1 < 1 or counter2 < 1:
         return False
     else:
         return True
@@ -117,5 +117,5 @@ def user_login():
         email = email , username_error = username_error, password_error = password_error,
         password_error_two = password_error_two, email_error = email_error)
     else:
-        return render_template('welcome.html', title = 'Welcome')
+        return render_template('welcome.html', title = 'Welcome', username = username)
 app.run()
