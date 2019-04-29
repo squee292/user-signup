@@ -25,6 +25,29 @@ def validate_email(email):
     else:    
         return False
 
+def check_space(text):
+    count = 0
+    for n in text:
+        if (n.isspace()) == True:
+            count += 1
+    if count > 0:
+        return True
+    else:
+        return False
+
+def email_check(email):
+    counter1 = 0
+    counter2 = 0
+    for n in email:
+        if n == '.':
+            counter1 += 1
+        if n == '@':
+            counter2 += 1
+    if counter1 > 1 or counter2 > 1:
+        return False
+    else:
+        return True
+
 
 
 
@@ -60,7 +83,7 @@ def user_login():
     else:
         username = test_username
 
-    if test_username.isspace():
+    if check_space(test_username):
         username_error = "Please enter a user name with no space"
         username = ''
         error_control += 1
@@ -71,7 +94,7 @@ def user_login():
         password_error = "Please enter a password between 3-20 char long"
         error_control += 1
 
-    if test_password1.isspace():
+    if check_space(test_password1):
         password_error = "Please enter a password with no spaces"
         error_control += 1
     
@@ -79,11 +102,12 @@ def user_login():
         password_error_two = "Passwords do not match"
         error_control += 1
     
-    if validate_email(test_email) == True:
-        email = test_email
-    else:
-        email_error = "Please enter a valid email"
-        error_control += 1
+    if test_email != '':
+        if not email_check(test_email):
+            email_error = "Please enter a valid email"
+            error_control += 1
+        else:
+            email = test_email
 
     
 
@@ -91,7 +115,7 @@ def user_login():
     if error_control > 0:
         return render_template('signup.html', title = 'Signup', username = username, 
         email = email , username_error = username_error, password_error = password_error,
-        password_error_two = password_error_two)
+        password_error_two = password_error_two, email_error = email_error)
     else:
         return render_template('welcome.html', title = 'Welcome')
 app.run()
